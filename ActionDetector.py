@@ -73,7 +73,7 @@ class MyVGG(vgg.VGG):
 
     def get_features(self):
         return self.feature_images
-
+'''
 my_model = MyVGG(vgg.make_layers(vgg.cfg['A'])).cuda()
 my_model.load_state_dict(model_zoo.load_url(vgg.model_urls['vgg11']))
 
@@ -89,3 +89,40 @@ print(len(features))
 
 
 torch.save(features, "features")
+'''
+#plt.ion()
+features = torch.load("SpecialLayerFeature")
+top_features = [f[0: 33, ...] for f in features]
+mid_features = [f[33: 66, ...] for f in features]
+bottom_features = [f[66: 99, ...] for f in features]
+diff = []
+last_feature = None
+for feature in bottom_features:
+    if last_feature is not None:
+        diff.append(np.sum(abs(feature - last_feature)))
+
+    #plt.imshow(feature)
+    #plt.pause(0.05)
+    last_feature = feature
+average = np.asarray(diff).sum() / len(diff)
+#diff = [i - average for i in diff]
+
+
+index = [i for i in range(len(diff))]
+plt.title('Top area movement')
+plt.plot(index, diff)
+plt.legend(bbox_to_anchor=[0.3, 1])
+
+plt.grid()
+plt.show()
+
+
+
+
+
+
+
+
+
+
+

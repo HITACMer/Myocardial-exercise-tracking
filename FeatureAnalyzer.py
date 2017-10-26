@@ -33,7 +33,7 @@ conv = 0
 
 a = features[frame][conv].cpu().numpy()[0, ...]
 mu.show_detail(a)
-special_feature = [cv2.threshold(features[frame][1].cpu().numpy()[0][47], 0.5, 1, cv2.THRESH_BINARY) for frame in range(220)]
+special_feature = [cv2.threshold(features[frame][1].cpu().numpy()[0][47], 0.5, 1, cv2.THRESH_BINARY)[1] for frame in range(220)]
 torch.save(special_feature, "SpecialLayerFeature")
 
 for frame in range(220):
